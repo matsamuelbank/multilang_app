@@ -4,10 +4,6 @@ import environ
 import dj_database_url
 from decouple import config
 # Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
-
-
 
 env = environ.Env()
 env.read_env()
@@ -24,10 +20,10 @@ TEMPLATES_DIR = BASE_DIR / 'templates' # Ajout du chemin  du dossier templates
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -44,7 +40,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -53,13 +48,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
-STORAGES = {
-    
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
 
 ROOT_URLCONF = 'multilang_site.urls'
 
@@ -93,7 +81,7 @@ WSGI_APPLICATION = 'multilang_site.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 
 
