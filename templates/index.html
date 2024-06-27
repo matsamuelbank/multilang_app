@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    {# Important : il ne faut pas mettre le code d'une page avant cette ligne. Il faut écrire le code spécifique de la page après le bloc content. #}
+    {% get_current_language as LANGUAGE_CODE %}
+
+    <h1 class="text-center display-3">{% trans "Bienvenue sur ce site multilingue développé avec le framework Python Django" %}</h1>
+
+    <h1 class="text-center display-3">{% trans "Liste des articles" %}</h1>
+
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title my-css-class">
+                            {% comment %} si la langue actuelle de l'application est en anglais {% endcomment %}
+                            {% if LANGUAGE_CODE == 'en' %}
+                            {% comment %} on affiche la valeur du champs title_trad (qui a pour valeur la traduction anglaise du title) {% endcomment %}
+                                {{ article.title_trad }}
+                            {% else %}
+                                {{ article.title }}
+                            {% endif %}
+                        </h5>
+                        <p class="card-text">{% trans "Date de publication" %} : <br> {{ article.get_date }}</p>
+                        <a href="{% url 'main:article_detail' article.id %}" class="btn btn-primary">{% trans "Voir l'article" %}</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

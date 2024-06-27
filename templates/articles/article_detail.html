@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+{% get_current_language as LANGUAGE_CODE %}
+
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-center">
+                {% if LANGUAGE_CODE == 'en' %}
+                    {{ article.title_trad }}
+                {% else %}
+                    {{ article.title }}
+                {% endif %}
+            </h1>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{% trans "Date de publication" %} : {{ article.get_date }}</h5>
+            <p class="card-text text-justify" style="width: 100%;">
+                {% if LANGUAGE_CODE == 'en' %}
+                    {{ article.content_trad }}
+                {% else %}
+                    {{ article.content }}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+
+    <h1>{%  trans "ChatBot_RAG" %}</h1>
+    <div id="conversation">
+        {% for message in conversation %}
+            {% comment %} si le role dans la conversation est user {% endcomment %}
+            {% if message.role == 'user' %}
+                {% comment %} j'affiche le contenu de sa question ou requêtte {% endcomment %}
+                <div class="user-messages"><p>{%  trans "Moi" %}: {{ message.content }}</p></div>
+            {% comment %} si non si le role vaut assistant(le LLM) {% endcomment %}
+            {% elif message.role == 'assistant' %}
+                {% comment %} j'affiche la réponse du LLM {% endcomment %}
+                <div class="chatbot-messages"><p> {%  trans "ChatBot" %} : {{ message.content }}</p></div>
+            {% endif %}
+        {% endfor %}
+    </div>       
+    <form id="chat-form" method="POST" action="{% url 'main:chat_rag' %}">
+        {% csrf_token %}
+        <div class="container chat">
+            <textarea rows="3" id="user-input" type="text" name="user_input" placeholder="{%  trans "Votre message" %}"></textarea>
+            <input id="inputSubmit" type="submit" value="{%  trans "Envoyer" %}">
+        </div>
+    </form>
+    <form id="reset-form" method="POST" action="{% url 'main:chat_rag' %}" style="margin-top: 10px;">
+        {% csrf_token %}
+        <button type="submit" name="reset" value="true">{%  trans "Réinitialiser la conversation" %}</button>
+    </form>
+
+{% endblock %}
